@@ -3,3 +3,4 @@ OSport.sqlite3
 .DS_Store
 .idea/
 __pycache__/
+venv/
