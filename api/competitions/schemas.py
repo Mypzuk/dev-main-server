@@ -1,6 +1,8 @@
 from datetime import date
 
+from typing import Optional
 from pydantic import BaseModel
+
 
 class Competition(BaseModel):
     competition_id: int
@@ -9,17 +11,18 @@ class Competition(BaseModel):
 class CompetitionCreate(BaseModel):
     title: str
     type: str
-    password: str
+    password: Optional[str] = None
     video_instruction: str
     start_date: date
     end_date: date
     status: str
-    priority: int
+    priority: float
     coef_m: float
     coef_f: float
 
 
 class CompetitionSchemas(CompetitionCreate):
     competition_id: int
+
     class Config:
         from_attributes = True

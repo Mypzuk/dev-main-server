@@ -1,5 +1,7 @@
-from sqlalchemy import select
+from sqlalchemy import select,func
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from datetime import date
 
 from api.competitions.schemas import CompetitionSchemas, CompetitionCreate
 from core.models import Competitions
@@ -39,3 +41,19 @@ async def delete_competition(competition_in, session):
     await session.delete(competition_in)
     await session.commit()
     return ResponseTemplates.success(message=f"Competition deleted")
+
+
+async def get_current_competitions(session):
+    today = date.today()
+    
+    stmt = (
+        select(Competitions)
+        .where(Competitions.start_date <= today)
+        .where(Competitions.end_date >= today)
+
+    )
+    result = await session.execute(stmt)
+    competitions = result.scalars().all()
+
+    competition_schemas = [CompetitionSchemas.model_validate(comp) for comp in competitions]
+    return ResponseTemplates.success(data=competition_schemas)

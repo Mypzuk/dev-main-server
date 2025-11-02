@@ -11,9 +11,14 @@ from .schemas import Competition, CompetitionCreate
 router = APIRouter(tags=["Сompetitions 🚀"])
 
 
+@router.get("/competitions/current")
+async def get_current_competitions(session: AsyncSession = Depends(db_helper.session_getter)):
+    return await func.get_current_competitions(session=session)
+
 @router.get("/competitions/{competition_id}")
 async def get_competition(competition: Competition = Depends(dependencies.check_competition_id)):
     return competition
+    
 @router.get("/competitions")
 async def get_competitions(session: AsyncSession = Depends(db_helper.session_getter)):
     return await func.get_competitions(session)
@@ -26,6 +31,9 @@ async def create_competition(competition_in: CompetitionCreate, session: AsyncSe
 async def update_competition(competition_in: CompetitionCreate, competition: Competition = Depends(dependencies.check_competition_id), session: AsyncSession = Depends(db_helper.session_getter)):
     return await func.update_competition(competition_in=competition_in, competition=competition, session=session)
 
+
 @router.delete("/competitions/{competition_id}")
 async def delete_competition(competition_in: Competition = Depends(dependencies.check_competition_id), session: AsyncSession = Depends(db_helper.session_getter)):
     return await func.delete_competition(competition_in=competition_in, session=session)
+
+

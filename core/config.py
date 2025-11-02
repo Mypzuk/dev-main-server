@@ -13,7 +13,7 @@ from pydantic import BaseModel
 class DatabaseConfig(BaseModel):
     # url: str = os.getenv("URL_DB")
     url: str = (
-        "postgresql+asyncpg://osporter:fOtEyhe7Q*ix@nekludhelul.beget.app:5432/osport"
+        "sqlite+aiosqlite:///OSport.sqlite3"
     )
     echo: bool = False
     echo_pool: bool = False

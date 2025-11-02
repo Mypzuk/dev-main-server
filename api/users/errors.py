@@ -19,3 +19,10 @@ class ErrorTemplates:
             status_code=404,
             detail={"message": message}
         )
+
+    @staticmethod
+    def invalid_code(message: str = "Invalid verification code"):
+        raise HTTPException(
+            status_code=400,
+            detail={"message": message}
+        )

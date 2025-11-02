@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
+
 from . import dependencies
-from .schemas import User, UserCreate
+from .schemas import User, UserCreate, UserUpdate
 from core.db_helper import db_helper
 
 from . import functions as func
@@ -33,3 +34,13 @@ async def update_user(user_in: UserCreate, user = Depends(dependencies.check_use
 @router.delete("/users/{user_id}")
 async def delete_user(user_in: User = Depends(dependencies.check_user_id), session: AsyncSession = Depends(db_helper.session_getter)):
     return await func.delete_user(session=session, user_in=user_in)
+
+@router.get("/users/{user_id}/profile")
+async def get_user_profile(user: User = Depends(dependencies.check_user_id), session: AsyncSession = Depends(db_helper.session_getter)):
+    return await func.get_user_profile(user=user, session=session)
+
+
+
+@router.patch('/users/{user_id}/params')
+async def update_user_params(user_in: UserUpdate, user = Depends(dependencies.check_user_id), session: AsyncSession = Depends(db_helper.session_getter)):
+    return await func.patch_user(session=session, user_in=user_in, user=user)

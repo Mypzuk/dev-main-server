@@ -6,7 +6,7 @@ from .errors import ErrorTemplates
 from . import functions as func
 
 from core.db_helper import db_helper
-from .schemas import UserCreate
+from .schemas import UserCreate, UserCheck
 
 
 async def check_user_id(user_id: int, session: AsyncSession = Depends(db_helper.session_getter)):
